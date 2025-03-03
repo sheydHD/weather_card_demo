@@ -3,48 +3,54 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Modern Weather Cards</title>
-    <link rel="stylesheet" href="styles.css" />
+    <title>Modern Weather Dashboard</title>
+    <link rel="stylesheet" href="src/styles/main.css" />
+    <link rel="stylesheet" href="src/styles/loading.css" />
   </head>
-  <body>
-    <div class="container">
-      <div class="weather-card sun-card" data-weather="sunny">
-        <div class="card-content">
-          <div class="sun"></div>
-          <div class="weather-info">
-            <div class="temperature">28°</div>
-            <div class="weather-title">Sunny</div>
-          </div>
-        </div>
-      </div>
+  <body class="day-theme">
+    <div id="loading" class="loading">
+      <div class="loading-spinner"></div>
+    </div>
 
-      <div class="weather-card rain-card" data-weather="rainy">
-        <div class="card-content">
-          <div class="weather-info">
-            <div class="temperature">18°</div>
-            <div class="weather-title">Rainy</div>
-          </div>
-        </div>
-      </div>
+    <div class="theme-toggle">
+      <button id="theme-switch">
+        <i class="sun-icon">☀️</i>
+        <i class="moon-icon">🌙</i>
+      </button>
+    </div>
 
-      <div class="weather-card snow-card" data-weather="snowy">
-        <div class="card-content">
-          <div class="weather-info">
-            <div class="temperature">-2°</div>
-            <div class="weather-title">Snowy</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="weather-card wind-card" data-weather="windy">
-        <div class="card-content">
-          <div class="weather-info">
-            <div class="temperature">22°</div>
-            <div class="weather-title">Windy</div>
-          </div>
-        </div>
+    <div class="search-container">
+      <div class="search-box">
+        <input
+          type="text"
+          id="location-search"
+          placeholder="Search location..."
+          autocomplete="off"
+        />
+        <button id="clear-search" class="clear-search">×</button>
+        <div class="search-results" id="search-results"></div>
       </div>
     </div>
-    <script src="script.js"></script>
+
+    <main class="dashboard">
+      <div class="location-info">
+        <h1 id="location-name">Loading location...</h1>
+        <div id="local-time">Loading time...</div>
+      </div>
+
+      <div class="weather-panel">
+        <div class="current-weather">
+          <!-- Current weather card will be inserted here -->
+        </div>
+        <div class="weather-details">
+          <!-- Additional weather details will be inserted here -->
+        </div>
+      </div>
+
+      <div class="forecast-container">
+        <!-- 5-day forecast cards will be inserted here -->
+      </div>
+    </main>
+    <script type="module" src="src/index.js"></script>
   </body>
 </html>

@@ -1,0 +1,1044 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+
+:root {
+  --card-radius: 20px;
+  --card-glass: rgba(255, 255, 255, 0.1);
+  --card-border: rgba(255, 255, 255, 0.1);
+  --sunny-color: #ffd700;
+  --rainy-color: #4facfe;
+  --snowy-color: #ffffff;
+  --windy-color: #e0e0e0;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  color: white;
+  font-family: "Inter", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  animation: gradientShift 30s ease-in-out infinite alternate;
+  background-size: 200% 200%;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.weather-card {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: var(--card-radius);
+  padding: 10px;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  min-height: 100px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transform-style: preserve-3d;
+  perspective: 500px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  contain: content;
+}
+
+.weather-card:hover {
+  transform: translateY(-5px) rotateX(5deg);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+  margin-bottom: 30px;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  flex: 1;
+}
+
+.main-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
+.weather-info {
+  flex: 1;
+}
+
+.weather-details-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transform: translateZ(0);
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1em;
+  transform: translateZ(0);
+}
+
+.detail-label {
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+.detail-value {
+  font-weight: 600;
+}
+
+.temperature {
+  font-size: 3.5em;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.date {
+  font-size: 1.1em;
+  opacity: 0.8;
+}
+
+.weather-title {
+  font-size: 1.4em;
+  font-weight: 400;
+  margin: 5px 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.sun-times {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9em;
+  opacity: 0.8;
+  margin-top: 8px;
+}
+
+/* Weather type specific styles */
+.sun-card {
+  background: linear-gradient(
+    to right bottom,
+    rgba(255, 215, 0, 0.25),
+    rgba(255, 215, 0, 0.15)
+  );
+}
+
+.rain-card {
+  background: linear-gradient(
+    to right bottom,
+    rgba(79, 172, 254, 0.25),
+    rgba(79, 172, 254, 0.15)
+  );
+}
+
+.snow-card {
+  background: linear-gradient(
+    to right bottom,
+    rgba(255, 255, 255, 0.25),
+    rgba(255, 255, 255, 0.15)
+  );
+}
+
+.wind-card {
+  background: linear-gradient(
+    to right bottom,
+    rgba(224, 224, 224, 0.25),
+    rgba(224, 224, 224, 0.15)
+  );
+}
+
+/* Weather effects */
+.sun {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  background: var(--sunny-color);
+  border-radius: 50%;
+  box-shadow: 0 0 50px var(--sunny-color);
+  animation: glow 4s infinite alternate, sunRotate 30s linear infinite;
+  transform-origin: center;
+}
+
+.sun::after {
+  content: "";
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  right: -20px;
+  bottom: -20px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 215, 0, 0.3) 0%,
+    rgba(255, 215, 0, 0) 70%
+  );
+  animation: sunPulse 3s infinite alternate;
+}
+
+.rain-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.raindrop {
+  position: absolute;
+  width: 2px;
+  height: 20px;
+  background: linear-gradient(to bottom, transparent, var(--rainy-color));
+  animation: rain 1.5s linear infinite;
+  opacity: 0;
+  top: -20px;
+  filter: blur(0.5px);
+}
+
+@keyframes rain {
+  0% {
+    transform: translateY(0) skewX(-15deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(340px) skewX(-15deg);
+    opacity: 0;
+  }
+}
+
+.snow-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.snowflake {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: var(--snowy-color);
+  border-radius: 50%;
+  filter: blur(1px);
+  animation: snow 6s linear infinite;
+  opacity: 0;
+  top: -10px;
+  box-shadow: 0 0 3px rgba(255, 255, 255, 0.8);
+}
+
+@keyframes snow {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(340px) translateX(20px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.wind-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.wind-line {
+  position: absolute;
+  height: 1px;
+  background: var(--windy-color);
+  filter: blur(1px);
+  animation: wind 2s linear infinite;
+}
+
+@keyframes wind {
+  0% {
+    transform: translateX(-100%) skewY(3deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateX(300px) skewY(3deg);
+    opacity: 0;
+  }
+}
+
+/* Animations */
+@keyframes glow {
+  from {
+    opacity: 0.8;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes sunPulse {
+  from {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  to {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+@keyframes sunRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Add particle effects */
+.particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Add these new styles after your existing styles */
+
+.dashboard {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0px auto 70px;
+  padding: 0 20px;
+}
+
+.location-info {
+  text-align: center;
+  margin-bottom: 15px;
+  padding: 5px;
+}
+
+#location-name {
+  font-size: 2.5em;
+  font-weight: 600;
+  margin: 0 0 5px 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  display: block;
+}
+
+#local-time {
+  font-size: 1.2em;
+  opacity: 0.9;
+  display: block;
+}
+
+.weather-panel {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 20px;
+  margin-bottom: 60px;
+  align-items: stretch;
+}
+
+.current-weather {
+  min-height: 300px;
+}
+
+.weather-details {
+  background: var(--card-glass);
+  border-radius: var(--card-radius);
+  padding: 0px;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.forecast-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.forecast-container .weather-card {
+  min-height: 150px;
+  padding: 10px;
+}
+
+.forecast-container .temperature {
+  font-size: 2.8em;
+}
+
+.forecast-container .detail-row {
+  font-size: 0.9em;
+}
+
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+}
+
+#theme-switch {
+  background: var(--card-glass);
+  border: none;
+  border-radius: 30px;
+  padding: 10px 20px;
+  color: white;
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+}
+
+#theme-switch:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.sun-icon,
+.moon-icon {
+  font-size: 1.2em;
+}
+
+.day-theme .moon-icon,
+.night-theme .sun-icon {
+  display: none;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .weather-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .current-weather .weather-card,
+  .weather-details-panel {
+    min-height: 0;
+  }
+
+  .forecast-container {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+}
+
+/* Smooth transitions for all hover effects */
+.weather-card,
+.sun,
+.rain-container,
+.snow-container,
+.wind-container {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Remove any animation resets on hover */
+.sun-card:hover .sun,
+.rain-card:hover .rain,
+.snow-card:hover .snow,
+.wind-card:hover .wind {
+  animation-play-state: running;
+}
+
+/* Add these styles */
+.moon {
+  width: 60px;
+  height: 60px;
+  background: var(--card-glass);
+  border-radius: 50%;
+  position: relative;
+  box-shadow: inset -8px -8px 0 0 var(--sunny-color);
+  transform: rotate(45deg);
+  animation: moonGlow 3s infinite alternate;
+}
+
+@keyframes moonGlow {
+  from {
+    box-shadow: inset -8px -8px 0 0 var(--sunny-color);
+  }
+  to {
+    box-shadow: inset -8px -8px 0 0 var(--sunny-color),
+      0 0 20px var(--sunny-color);
+  }
+}
+
+/* Update current weather card styles for a more compact layout */
+.current-weather .weather-card {
+  min-height: 250px;
+  max-height: 350px;
+}
+
+.current-weather .card-header {
+  text-align: left;
+}
+
+.current-weather .date {
+  font-size: 1.2em;
+}
+
+.current-weather .weather-title {
+  font-size: 1.8em;
+  font-weight: 600;
+}
+
+.current-weather .sun-times {
+  gap: 15px;
+  font-size: 0.9em;
+  margin-top: 5px;
+}
+
+.current-weather .main-info {
+  margin: 5px 0 10px;
+}
+
+.current-weather .sun,
+.current-weather .moon {
+  width: 70px;
+  height: 70px;
+}
+
+.current-weather .temperature {
+  font-size: 4.5em;
+}
+
+.current-weather .weather-details-list {
+  margin-top: 10px;
+  padding-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.current-weather .detail-row {
+  gap: 3px;
+}
+
+.current-weather .detail-label {
+  font-size: 0.85em;
+}
+
+.current-weather .detail-value {
+  font-size: 1.1em;
+}
+
+/* Fix the additional details panel */
+.weather-details-panel {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: var(--card-radius);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(5px);
+  padding: 20px;
+  height: 100%;
+  min-height: 250px;
+  max-height: 350px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Make the additional details panel have the same hover effect */
+.weather-details-panel:hover {
+  transform: translateY(-5px) rotateX(5deg);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Style the additional details header */
+.weather-details-panel h3 {
+  font-size: 1.4em;
+  margin-top: 0;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Style the detail items */
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-item .detail-label {
+  opacity: 0.8;
+  font-weight: 500;
+}
+
+.detail-item span:last-child {
+  font-weight: 600;
+}
+
+/* Make sure both panels have the same height */
+.weather-panel {
+  align-items: stretch;
+}
+
+.current-weather,
+.weather-details {
+  height: 100%;
+}
+
+/* Add a subtle animation to the background */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Add styles for the clear search button */
+.clear-search {
+  position: absolute;
+  left: 420px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.2em;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  z-index: 10;
+  padding: 5px;
+  line-height: 1;
+}
+
+.clear-search:hover {
+  opacity: 1;
+}
+
+/* Improve contrast for header elements */
+#location-name {
+  font-size: 2.2em;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Performance optimizations */
+
+/* Use hardware acceleration for animations */
+.weather-card,
+.sun,
+.moon,
+.rain,
+.snow,
+.wind {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Reduce animation complexity */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+body {
+  animation: gradientShift 30s ease-in-out infinite alternate;
+  background-size: 200% 200%;
+}
+
+/* Simplify box-shadows */
+.weather-card {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Reduce backdrop-filter usage */
+.weather-card,
+#location-search,
+#theme-switch {
+  backdrop-filter: blur(5px);
+}
+
+/* Optimize text shadows */
+.temperature,
+.weather-title,
+#location-name,
+#local-time {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Reduce number of particles in animations */
+.rain-container,
+.snow-container {
+  contain: layout style paint;
+}
+
+/* Optimize transitions */
+.weather-card,
+.sun,
+.rain-container,
+.snow-container,
+.wind-container {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Reduce animation complexity for weather effects */
+.sun {
+  animation: glow 4s infinite alternate, sunRotate 30s linear infinite;
+}
+
+.rain,
+.snow,
+.wind {
+  animation-duration: 2s !important;
+}
+
+/* Additional performance optimizations */
+
+/* Reduce repaints by using transform instead of opacity for animations */
+@keyframes fadeIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Reduce number of animated elements */
+.rain-container,
+.snow-container,
+.wind-container {
+  pointer-events: none;
+  contain: layout style paint;
+}
+
+/* Limit number of rain/snow particles */
+.rain:nth-child(n + 6),
+.snow:nth-child(n + 6) {
+  display: block;
+}
+
+/* Disable animations on mobile devices */
+@media (max-width: 768px) {
+  body {
+    animation: none;
+  }
+
+  .sun,
+  .moon,
+  .rain,
+  .snow,
+  .wind {
+    animation: none !important;
+  }
+
+  .weather-card:hover {
+    transform: none;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* Use more efficient CSS properties */
+.weather-card {
+  contain: content;
+}
+
+/* Reduce paint operations */
+.weather-details-list,
+.detail-row {
+  transform: translateZ(0);
+}
+
+/* Simplify gradients */
+.sun-card,
+.rain-card,
+.snow-card,
+.wind-card {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Disable text shadows on lower-end devices */
+@media (prefers-reduced-motion: reduce) {
+  .temperature,
+  .weather-title,
+  #location-name,
+  #local-time {
+    text-shadow: none;
+  }
+
+  body {
+    animation: none;
+  }
+
+  .weather-card:hover {
+    transform: none;
+  }
+
+  .sun,
+  .moon,
+  .rain,
+  .snow,
+  .wind {
+    animation: none !important;
+  }
+}
+
+/* Reduce DOM size by simplifying weather effects */
+.rain-container,
+.snow-container {
+  opacity: 1;
+}
+
+/* Make additional details match other boxes */
+.weather-details-panel:hover {
+  transform: translateY(-5px) rotateX(5deg);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Match heights between main box and additional details */
+.weather-panel {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 20px;
+  margin-bottom: 60px;
+  align-items: stretch;
+}
+
+.current-weather .weather-card,
+.weather-details-panel {
+  height: 100%;
+  min-height: 280px;
+  padding: 20px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Remove sun color change on hover */
+.sun:hover,
+.weather-card:hover .sun {
+  background: var(--sunny-color);
+  box-shadow: 0 0 50px var(--sunny-color);
+}
+
+/* Disable hover effects on sun/moon */
+.sun,
+.moon {
+  transition: none;
+}
+
+/* Make header elements consistent */
+.app-header {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* Fix search box alignment */
+.search-box {
+  position: relative;
+}
+
+/* Fix forecast container alignment */
+.forecast-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
+  width: 100%;
+}
+
+/* Fix location and time display */
+.location-info {
+  text-align: center;
+  margin-bottom: 25px;
+  padding: 10px;
+}
+
+/* Time-based themes with better gradients */
+.morning-theme {
+  background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+  color: #333;
+}
+
+.day-theme {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: white;
+}
+
+.evening-theme {
+  background: linear-gradient(135deg, #f83600 0%, #f9d423 100%);
+  color: white;
+}
+
+.night-theme {
+  background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+  color: white;
+}
+
+/* Add these new styles */
+.search-container {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  width: 90%;
+  max-width: 400px;
+}
+
+.search-box {
+  position: relative;
+  background: transparent;
+  border-radius: 30px;
+  padding: 0;
+  max-width: 400px;
+  margin: 0 auto 15px;
+}
+
+#location-search {
+  width: 100%;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  font-size: 1em;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+  padding-right: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#location-search:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 10px;
+  background: var(--card-glass);
+  border-radius: 15px;
+  backdrop-filter: blur(5px);
+  overflow: hidden;
+  display: none;
+}
+
+.search-result-item {
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.search-result-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Enhanced weather effects on hover */
+.sun-card:hover .sun {
+  filter: brightness(1.2);
+  box-shadow: 0 0 70px var(--sunny-color);
+}
+
+.rain-card:hover .rain-container {
+  filter: brightness(1.2);
+  opacity: 0.9;
+}
+
+.snow-card:hover .snow-container {
+  filter: brightness(1.2);
+  opacity: 0.9;
+}
+
+.wind-card:hover .wind-container {
+  filter: brightness(1.2);
+  opacity: 0.9;
+}
+
+/* Add a subtle animation to the background */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  color: white;
+  font-family: "Inter", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  animation: gradientShift 30s ease-in-out infinite alternate;
+  background-size: 200% 200%;
+}

@@ -1,0 +1,30 @@
+{
+  "name": "weather_card_gui",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^6.2.0"
+  },
+  "main": "vite.config.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sheydHD/pac_man.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sheydHD/pac_man/issues"
+  },
+  "homepage": "https://github.com/sheydHD/pac_man#readme",
+  "description": ""
+}
